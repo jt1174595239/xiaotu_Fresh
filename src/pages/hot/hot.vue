@@ -34,6 +34,20 @@ const getHotRecommendData = async () => {
 onLoad(() => {
   getHotRecommendData()
 })
+//滚动触底
+const onScrolltolower = async () => {
+  const currsubTypes = subTypes.value[activeIndex.value]
+  // console.log(currsubTypes);
+
+  //当前页码累加
+  currsubTypes.goodsItems.page++
+  //调用API传参
+  const res = await getHotRecommendAPI(currUrlMap!.url, {
+    subType: currsubTypes.id,
+    page: currsubTypes.goodsItems.page,
+    pageSize: currsubTypes.goodsItems.pageSize,
+  })
+}
 </script>
 
 <template>
@@ -60,6 +74,7 @@ onLoad(() => {
       v-show="activeIndex === index"
       scroll-y
       class="scroll-view"
+      @scrolltolower="onScrolltolower"
     >
       <view class="goods">
         <navigator
