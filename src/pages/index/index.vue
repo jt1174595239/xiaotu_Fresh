@@ -7,8 +7,7 @@ import CategoryPanel from './components/CategoryPanel.vue'
 import PageSkeleton from './components/PageSkeleton.vue'
 import HotPanel from './components/HotPanel.vue'
 import { onLoad } from '@dcloudio/uni-app'
-import type { XtxGuessInstance } from '@/types/component'
-
+import { useGuessList } from '@/composables/index'
 const bannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
   const res = await getHomeBannerAPI()
@@ -31,12 +30,7 @@ const getHomeHotItemData = async () => {
 }
 
 //获取猜你喜欢组件实例
-const guessRef = ref<XtxGuessInstance>()
-//滚动触底
-const onScrollToLower = () => {
-  //console.log('滚动触底啦~');
-  guessRef.value?.getMore()
-}
+const { guessRef, onScrolltolower } = useGuessList()
 //自定义下拉刷新被触发
 //页面是否加载中标记
 const isLoading = ref(false)
@@ -75,7 +69,7 @@ const onRefresherrefresh = async () => {
     refresher-enabled
     @refresherrefresh="onRefresherrefresh"
     :refresher-triggered="isTriggered"
-    @scrolltolower="onScrollToLower"
+    @scrolltolower="onScrolltolower"
     class="scroll-view"
     scroll-y
   >
